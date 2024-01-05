@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Записи сообщества
+    Записи сообщества {{ group.title }}
 {% endblock %}
 
 {% block content %}
     <main>
-        <!-- класс py-5 создает отступы сверху и снизу блока -->
         <div class="container py-5">
-            {{ text }}
+            <h1>{{ group.title }}</h1>
+            <p>{{ group.description }}</p>
+            {% for post in posts %}
+                <ul>
+                    <li>
+                        Author: {{ post.author.get_full_name }}
+                    </li>
+                    <li>
+                        Publication date: {{ post.pub_date|date:"d E Y" }}
+                    </li>
+                </ul>
+                <p>{{ post.text }}</p>
+                <a href="">All group's posts</a>
+                {% if not forloop.last %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
         </div>
     </main>
 {% endblock %}
