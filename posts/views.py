@@ -3,7 +3,12 @@ from .models import Post, Group
 
 
 def index(request):
-    posts = Post.objects.order_by('-pub_date')[:10]
+    keyword = request.GET.get('q', None)
+    if keyword:
+        posts = Post.objects.filter(text__contains=keyword).select_related('author').select_related('group').order_by(
+            '-pub_date')[:10]
+    else:
+        posts = Post.objects.order_by('-pub_date')[:10]
     return render(request, 'posts/index.html', context={'posts': posts})
 
 

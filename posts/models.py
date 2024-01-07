@@ -7,13 +7,6 @@ class Group(models.Model):
     slug = models.SlugField()
     description = models.TextField()
 
-    # class Meta:
-    #     ordering = ("title",)
-    #     verbose_name = "Group"
-    #     verbose_name_plural = "Groups"
-    #     unique_together = ("title", "slug")
-    #     index_together = ("title", "slug")
-
     def __str__(self):
         return self.title
 
