@@ -14,10 +14,35 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Подключен файл со стандартными стилями бустрап -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        #sidebar {
+            float: right;
+            width: 20%;
+            padding: 10px;
+            background: #27aaed;
+            height: 100%;
+        }
+
+        #content {
+            float: left;
+            width: 75%;
+            padding: 0 0 0 30px;
+        }
+    </style>
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 {% include 'includes/header.html' %}
+{#<div id="sidebar">#}
+{#    <div class="login col-md-2 col-ld-2 col-sm-2">#}
+{#        {% if request.user.is_authenticated %}#}
+{#            {{ user.username }} |#}
+{#            <a href="{% url 'users:logout' %}">Logout</a>#}
+{#        {% else %}#}
+{#            <a href='{% url "users:login" %}'>Login</a>#}
+{#        {% endif %}#}
+{#    </div>#}
+{#</div>#}
 <div class="card-body">
     {% block content %}{% endblock %}
     {% include 'includes/footer.html' %}

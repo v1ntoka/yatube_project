@@ -9,5 +9,13 @@
             <!-- тег span используется для добавления нужных стилей отдельным участкам текста -->
             <span style="color:red">Ya</span>tube
         </a>
+        <div class="login col-md-2 col-ld-2 col-sm-2">
+            {% if request.user.is_authenticated %}
+                {{ user.username }} |
+                <a href="{% url 'users:logout' %}">Logout</a>
+            {% else %}
+                <a href='{% url "users:login" %}'>Login</a>
+            {% endif %}
+        </div>
     </div>
 </nav>  
