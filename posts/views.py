@@ -80,6 +80,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         context['total_posts'] = Post.objects.filter(author=context['post'].author).count()
+        context['upd_allowed'] = self.request.user.is_staff or self.request.user.is_superuser or self.request.user == \
+                                 context['post'].author
         return context
 
 
@@ -112,7 +114,18 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_edit'] = True
+        if self.request.user not in [super().get_form_kwargs()['instance'].author] + list(
+                map(lambda x: x.username, User.objects.filter(is_staff=1))):
+            return self.handle_no_permission()
+        context['upd_allowed'] = self.request.user.is_staff or self.request.user.is_superuser or self.request.user == \
+                                 get_object_or_404(Post, pk=self.kwargs['pk']).author
         return context
 
     def get_success_url(self):
         return reverse_lazy('posts:profile', kwargs={'username': self.request.user.username})
+
+    def get_from_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.user != kwargs['instance'].author:
+            return self.handle_no_permission()
+        return kwargs
