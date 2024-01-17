@@ -22,10 +22,12 @@
         </div>
         <!-- класс py-5 создает отступы сверху и снизу блока -->
         <div class="container py-5">
-            {% for post in posts %}
+            {% for post in page_obj %}
                 <ul>
                     <li>
-                        Author: {{ post.author.get_full_name }}
+                        {#                        Author: {{ post.author.get_full_name }}#}
+                        Author: <a
+                            href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.
                     </li>
                     <li>
                         Publication date: {{ post.pub_date|date:"d E Y" }}
@@ -35,6 +37,7 @@
                 {% if post.group %}
                     <a href={% url 'posts:group_posts' slug=post.group.slug %}>All group's posts</a>
                 {% endif %}
+                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>
                 {% if not forloop.last %}
                     <hr>
                 {% endif %}
@@ -42,4 +45,5 @@
 
         </div>
     </main>
+    {% include 'includes/paginator.html' %}
 {% endblock %}

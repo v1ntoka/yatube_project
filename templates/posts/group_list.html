@@ -12,14 +12,17 @@
             {% for post in posts %}
                 <ul>
                     <li>
-                        Author: {{ post.author.get_full_name }}
+                        Author: <a
+                            href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.
                     </li>
                     <li>
                         Publication date: {{ post.pub_date|date:"d E Y" }}
                     </li>
                 </ul>
                 <p>{{ post.text }}</p>
-                <a href="">All group's posts</a>
+                {#                <a href="">All group's posts</a>#}
+                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>
+                    
                 {% if not forloop.last %}
                     <hr>
                 {% endif %}

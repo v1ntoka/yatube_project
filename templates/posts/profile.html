@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+    Profile {{ profile.username }}
+{% endblock %}
+{% block content %}
+    <main>
+        <div class="container py-5">
+            <h1>All {{ profile.username }}'s posts</h1>
+            <h3>Total posts: {{ total_posts }}</h3>
+            <h4>Showed: {{ posts.count }}</h4>
+            <article>
+                <ul>
+                    {% for post in posts %}
+                        <li>
+                            <a href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.
+                        </li>
+                        <li>Publication date: {{ post.pub_date }}</li>
+                        <p>
+                            {{ post.text }}
+                        </p>
+                        {% if post.group %}
+                            <p><a href="{% url 'posts:group_posts' slug=post.group.slug %}">All group's posts</a></p>
+                        {% endif %}
+                        <a href="{% url 'posts:post_detail' pk=post.id %}">Details</a>
+                        {% if not forloop.last %}
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </article>
+            {% include 'includes/paginator.html' %}
+        </div>
+    </main>
+{% endblock %}
+{#	{% for post in posts %}#}
+{#		{{ post.text }}#}
+{#        {% if not forloop.last %}#}
+{#        	<hr>#}
+{#        {% endif %} #}
+{#	{% endfor %}#}
+{#	#}

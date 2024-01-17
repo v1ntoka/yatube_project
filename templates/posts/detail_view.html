@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ post.text|truncatechars:30 }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <aside class="col-12 col-md-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Publication date: {{ post.pub_date }}
+                </li>
+                {% if post.group %}
+                    <li class="list-group-item">
+                        Group: {{ post.group.title }}
+                        <a href="{% url 'posts:group_posts' slug=post.group.slug %}">All group's posts</a>
+                    </li>
+                {% endif %}
+                <li class="list-group-item">
+                    Author: {{ post.author.get_full_name }}
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Total number of user's posts: <span>{{ total_posts }}</span>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'posts:profile' username=post.author.username %}">All author's posts</a>
+                </li>
+            </ul>
+        </aside>
+    <article class="col-12 col-md-9">
+        <p>
+            {{ post.text }}
+        </p>
+    </article>
+    </div>
+{% endblock %}

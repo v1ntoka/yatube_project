@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+    All groups
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">All groups list:</div>
+        <div class="card-body">
+            <ul>
+                {% for group in groups %}
+                    <li><a href="{% url 'posts:group_posts' slug=group.slug %}">{{ group.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
