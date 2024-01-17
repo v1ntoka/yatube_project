@@ -3,7 +3,9 @@ from .models import Post, Group, User
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
+from . import forms
+from django.urls import reverse_lazy
 
 
 # @login_required(login_url='users:login')
@@ -49,13 +51,6 @@ class GroupPostsView(LoginRequiredMixin, TemplateView):
         return context
 
 
-# @login_required(login_url='/users/login')
-# def profile_view(request, username):
-#     profile = get_object_or_404(User, username=username)
-#     posts = Post.objects.filter(author=profile).order_by('-pub_date')
-#     context = {'profile': profile, 'posts': posts}
-#     return render(request, 'posts/profile.html', context)
-
 class ProfileView(LoginRequiredMixin, ListView):
     template_name = 'posts/profile.html'
     login_url = 'users:login'
@@ -81,12 +76,43 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'posts'
     model = Post
 
-    # def get_queryset(self):
-    #     # return Post.objects.get(id=self.kwargs['pk'])
-    #     return get_object_or_404(Post, id=self.kwargs['pk'])
-
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         context['total_posts'] = Post.objects.filter(author=context['post'].author).count()
         return context
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    login_url = 'users:login'
+    template_name = 'posts/create_view.html'
+    redirect_field_name = 'redirect_to'
+    form_class = forms.PostForm
+
+    # success_url = reverse('posts:profile', kwargs={'username': User.username})
+    # success_url = reverse_lazy('posts:profile', kwargs={'username': request.user.username})
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.author = self.request.user
+        fields.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('posts:profile', kwargs={'username': self.request.user.username})
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = 'users:login'
+    redirect_field_name = 'redirect_to'
+    model = Post
+    form_class = forms.PostForm
+    template_name = 'posts/create_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit'] = True
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('posts:profile', kwargs={'username': self.request.user.username})

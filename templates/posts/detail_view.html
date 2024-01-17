@@ -24,6 +24,11 @@
                 <li class="list-group-item">
                     <a href="{% url 'posts:profile' username=post.author.username %}">All author's posts</a>
                 </li>
+            {% if request.user.is_superuser or request.user.is_staff or request.user == post.author %}
+            <li class="list-group-item">
+                <a href="{% url 'posts:post_edit' post.id%}">Edit</a>
+            </li>
+            {% endif %}
             </ul>
         </aside>
     <article class="col-12 col-md-9">

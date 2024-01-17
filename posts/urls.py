@@ -12,5 +12,8 @@ urlpatterns = [
     path("group/<slug:slug>", views.group_posts, name='group_posts'),
     path("profile/<str:username>", views.ProfileView.as_view(), name='profile'),
     # path("profile/<str:username>", views.profile_view, name='profile'),
-    path("post/<int:pk>", views.PostDetailView.as_view(), name='post_detail')
+    path("post/<int:pk>", views.PostDetailView.as_view(), name='post_detail'),
+    path("post/<int:pk>/edit/", views.PostUpdateView.as_view(), name='post_edit'),
+    path("create/", views.PostCreateView.as_view(), name='post_create')
+
 ]
