@@ -26,10 +26,10 @@ def index(request):
     return render(request, 'posts/index.html', context={'posts': posts, 'page_obj': page_obj})
 
 
-@login_required(login_url='users:login')
-def group(request, slug=None):
-    text = "Здесь будет информация о группах проекта Yatube"
-    return render(request, 'posts/group_list.html', context={'slug': slug, 'text': text})
+# @login_required(login_url='users:login')
+# def group(request, slug=None):
+#     text = "Здесь будет информация о группах проекта Yatube"
+#     return render(request, 'posts/group_list.html', context={'slug': slug, 'text': text})
 
 
 @login_required(login_url='users:login')
@@ -114,7 +114,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_edit'] = True
-        if self.request.user not in [super().get_form_kwargs()['instance'].author] + list(
+        if self.request.user.username not in [super().get_form_kwargs()['instance'].author.username] + list(
                 map(lambda x: x.username, User.objects.filter(is_staff=1))):
             return self.handle_no_permission()
         context['upd_allowed'] = self.request.user.is_staff or self.request.user.is_superuser or self.request.user == \
@@ -124,8 +124,9 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('posts:profile', kwargs={'username': self.request.user.username})
 
-    def get_from_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        if self.request.user != kwargs['instance'].author:
-            return self.handle_no_permission()
-        return kwargs
+    # def get_from_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     if self.request.user != kwargs['instance'].author:
+    #         if not self.request.user.is_staff or not self.request.user.is_superuser:
+    #             return self.handle_no_permission()
+    #     return kwargs

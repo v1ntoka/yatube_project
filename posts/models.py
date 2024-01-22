@@ -14,10 +14,21 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField()
-    pub_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='groups', blank=True, null=True)
+    text = models.TextField(
+        verbose_name="Post's text",
+        help_text="Enter your post's text"
+    )
+    pub_date = models.DateTimeField(
+        verbose_name="Date published",
+        auto_now_add=True,
+    )
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Author")
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, related_name='posts', blank=True, null=True,
+                              verbose_name="Group", help_text="Choose group")
+    image = models.ImageField(upload_to='static/posts/', verbose_name="Image", blank=True, null=True)
+
+    def __str__(self):
+        return self.text[:15]
 
 
 class Contact(models.Model):
