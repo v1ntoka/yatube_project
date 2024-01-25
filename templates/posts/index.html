@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Последние обновления на сайте
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container">
+            <h1>Поиск по записям</h1>
+            <div class="card col-4">
+                <div class="card-body">
+                    <form class="form-inline" action="/">
+                        <div class="form-row">
+                            <input name="q" class="form-control form-control-lg" type="search" placeholder="Поиск"
+                                   {% if keyword %}value="{{ keyword }}" {% endif %}>
+                            <br>
+                            <button class="btn btn-primary" type="submit">Найти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- класс py-5 создает отступы сверху и снизу блока -->
+        <div class="container py-5">
+            {% for post in page_obj %}
+                <ul>
+                    <li>
+                        Author: {{ post.author.get_full_name }}
+                        {#                        <a href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.#}
+                    </li>
+                    <li>
+                        Publication date: {{ post.pub_date|date:"d E Y" }}
+                    </li>
+                </ul>
+                <p>{{ post.text }}</p>
+                {% if post.group %}
+                    {#                    <a href={% url 'posts:group_posts' slug=post.group.slug %}>All group's posts</a>#}
+                {% endif %}
+                {#                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>#}
+                {% if not forloop.last %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </main>
+    {% include 'includes/paginator.html' %}
+{% endblock %}
