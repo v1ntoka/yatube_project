@@ -52,3 +52,4 @@ class TestViews(TestCase):
         response_authorised = self.authorised_client.get('/jopa/')
         self.assertEqual(response_guest.status_code, 404)
         self.assertEqual(response_authorised.status_code, 404)
+

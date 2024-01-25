@@ -25,7 +25,13 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Author")
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, related_name='posts', blank=True, null=True,
                               verbose_name="Group", help_text="Choose group")
-    image = models.ImageField(upload_to='static/posts/', verbose_name="Image", blank=True, null=True)
+
+    image = models.ImageField(upload_to='posts/', verbose_name="Image", blank=True, null=True)
+
+    class Meta:
+        ordering = ('-pub_date',)
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
 
     def __str__(self):
         return self.text[:15]

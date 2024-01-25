@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .forms import PostForm
 from .models import Post, Group, User
 from django.core.paginator import Paginator, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -89,16 +91,21 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = 'users:login'
     template_name = 'posts/create_view.html'
     redirect_field_name = 'redirect_to'
-    form_class = forms.PostForm
+    form_class = PostForm
 
-    # success_url = reverse('posts:profile', kwargs={'username': User.username})
-    # success_url = reverse_lazy('posts:profile', kwargs={'username': request.user.username})
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
-    def form_valid(self, form):
-        fields = form.save(commit=False)
-        fields.author = self.request.user
-        fields.save()
-        return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            form.save()
+            return redirect('posts:profile', self.request.user)
+        else:
+            return render(request, self.template_name, {'form': form})
 
     def get_success_url(self):
         return reverse_lazy('posts:profile', kwargs={'username': self.request.user.username})
@@ -110,6 +117,13 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = forms.PostForm
     template_name = 'posts/create_view.html'
+
+    def form_valid(self, form):
+        fields = form.save(commit=False)
+        fields.author = self.request.user
+        fields.image = self.request.FILES or None
+        fields.save()
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
