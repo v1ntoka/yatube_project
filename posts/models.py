@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import truncatechars
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -8,6 +9,9 @@ class Group(models.Model):
     title = models.CharField(max_length=50)
     slug = models.SlugField()
     description = models.TextField()
+
+    class Meta:
+        ordering = ('title', )
 
     def __str__(self):
         return self.title
@@ -29,9 +33,10 @@ class Post(models.Model):
     )
     group = models.ForeignKey(
         Group,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         verbose_name="Group",
-        help_text="Choose group"
+        help_text="Choose group",
+        blank=True, null=True
     )
 
     class Meta:
@@ -41,3 +46,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.text[:15]
+
+    def short_text(self):
+        return truncatechars(self.text, 35)

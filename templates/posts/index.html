@@ -23,6 +23,7 @@
         </div>
         <!-- класс py-5 создает отступы сверху и снизу блока -->
         <div class="container py-5">
+            <hr>
             {% for post in page_obj %}
                 <ul>
                     <li>
@@ -34,9 +35,17 @@
                     </li>
                 </ul>
                 <p>{{ post.text }}</p>
-                {% if post.group %}
-                    {#                    <a href={% url 'posts:group_posts' slug=post.group.slug %}>All group's posts</a>#}
-                {% endif %}
+                <div class="d-flex flex-row bd-highlight mb-3">
+                    <div class="p-2 bd-highlight">
+                        {% if post.group %}
+                            <a href={% url 'posts:group' slug=post.group.slug %}>All group's posts</a>
+                        {% endif %}
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <a href="{% url 'posts:groups' %}">Список групп</a>
+                    </div>
+                </div>
+
                 {#                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>#}
                 {% if not forloop.last %}
                     <hr>
@@ -45,5 +54,4 @@
 
         </div>
     </main>
-    {% include 'includes/paginator.html' %}
 {% endblock %}

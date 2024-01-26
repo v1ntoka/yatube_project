@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+    Список групп
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="card-header">
+            <h4>Список групп</h4>
+        </div>
+        <div class="card-body">
+            {% for group in groups %}
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="{% url 'posts:group' slug=group.slug %}">{{ group.title }}</a>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
