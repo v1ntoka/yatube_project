@@ -3,4 +3,4 @@ from django.views.generic import TemplateView
 
 
 class AboutView(TemplateView):
-    template_name = 'about/amout_view.html'
+    template_name = 'about/about_view.html'

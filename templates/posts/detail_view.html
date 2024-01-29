@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ post.text|truncatechars:30 }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <aside class="col-12 col-md-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="background-color: #ececec">
+                    Дата публикации: {{ post.pub_date }}
+                </li>
+                {% if post.group %}
+                    <li class="list-group-item" style="background-color: #ececec">
+
+                        Группа:
+                        {% if post.group %}
+                            <a href="{% url 'posts:group' slug=post.group.slug %}"
+                               style="background-color: #ececec">{{ post.group.title }}</a>
+                        {% else %}
+                            Нет
+                        {% endif %}
+                    </li>
+                {% endif %}
+                <li class="list-group-item" style="background-color: #ececec">
+                    Автор: <a href="{% url 'users:profile' username=post.author.username %}">
+                    {% if post.author.get_full_name %}
+                        {{ post.author.get_full_name }}
+                    {% else %}
+                        {{ post.author.username }}
+                    {% endif %}
+                </a>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center"
+                    style="background-color: #ececec">
+                    Всего записей пользователя: <span>{{ total }}</span>
+                </li>
+                {#            {% if request.user.is_superuser or request.user.is_staff or request.user == post.author %}#}
+                {% if upd_allowed %}
+                    <li class="list-group-item">
+                        <a href="{% url 'posts:post_edit' post.id %}">Edit</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </aside>
+        <article class="col-12 col-md-9">
+            <div class="card" style="background-color: #ececec">
+                <div class="card-body">
+                    <div class="card-text">
+                        {{ post.text }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+{% endblock %}

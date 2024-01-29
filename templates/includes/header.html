@@ -13,7 +13,7 @@
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a class="nav-link link-danger"
-                       href="#!">О нас</a>
+                       href="{% url 'about:about' %}">О нас</a>
                 </li>
                 {% if request.user.is_authenticated %}
                     <form class="d-flex" action="/">

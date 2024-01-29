@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger
-from .models import Post, Group
+from .models import Post, Group, User
 from django.views.generic import ListView
 
 
@@ -40,3 +40,9 @@ class GroupsView(ListView):
     paginate_by = 15
     model = Group
     context_object_name = 'groups'
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    total = Post.objects.filter(author=post.author).count()
+    return render(request, 'posts/detail_view.html', context={'post': post, 'total': total})
