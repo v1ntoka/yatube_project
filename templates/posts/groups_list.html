@@ -10,7 +10,8 @@
         <div class="card-body">
             {% for group in groups %}
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="{% url 'posts:group' slug=group.slug %}">{{ group.title }}</a>
+                    <li class="list-group-item" style="background-color: #ececec"><a
+                            href="{% url 'posts:group' slug=group.slug %}">{{ group.title }}</a>
                     </li>
                 </ul>
             {% endfor %}

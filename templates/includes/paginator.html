@@ -1,5 +1,6 @@
 {% if page_obj.has_other_pages %}
-    <nav aria-label="Page navigation" class="my-5">
+    {% if request.user.is_authenticated %}
+    <nav aria-label="Page navigation" class="my-5" style="background-color: #f1f1f1">
         <ul class="pagination">
             {% if page_obj.has_previous %}
                 <li class="page-item"><a class="page-link" href="?page=1">Первая</a></li>
@@ -34,4 +35,7 @@
             {% endif %}
         </ul>
     </nav>
+        {% else %}
+         <a href="{% url 'users:login' %}" class="link-danger text-center"><h2>Показана 1 страница. Для просмотра всех записей необходима авторизация.</h2></a>
+        {% endif %}
 {% endif %} 

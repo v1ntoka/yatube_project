@@ -6,47 +6,29 @@
 
 {% block content %}
     <main>
-        <div class="container">
-            <h1>Поиск по записям</h1>
-            <div class="card col-4">
-                <div class="card-body">
-                    <form class="form-inline" action="/">
-                        <div class="form-row">
-                            <input name="q" class="form-control form-control-lg" type="search" placeholder="Поиск"
-                                   {% if keyword %}value="{{ keyword }}" {% endif %}>
-                            <br>
-                            <button class="btn btn-primary" type="submit">Найти</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+{#        <div class="container p-3">#}
+{#            <div class="card" style="background-color: #ececec; width: 18rem">#}
+{#                <div class="card-header text-center"><b>Поиск по записям</b></div>#}
+{#                <div class="card-body">#}
+{#                    <form class="form-inline" action="/">#}
+{#                        <div class="form-row">#}
+{#                            <input name="q" class="form-control form-control-lg" type="search" placeholder="Поиск"#}
+{#                                   {% if keyword %}value="{{ keyword }}" {% endif %}>#}
+{#                            <br>#}
+{#                            <div class="col text-center">#}
+{#                                <button class="btn btn-primary btn-block mb-8 col-12" type="submit">Найти</button>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         <!-- класс py-5 создает отступы сверху и снизу блока -->
-        <div class="container py-5">
-            <hr>
+        <div class="container py-3">
+{#            <hr>#}
+        <h1 class="p-1">Главная</h1>
             {% for post in page_obj %}
-                <ul>
-                    <li>
-                        Author: {{ post.author.get_full_name }}
-                        {#                        <a href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.#}
-                    </li>
-                    <li>
-                        Publication date: {{ post.pub_date|date:"d E Y" }}
-                    </li>
-                </ul>
-                <p>{{ post.text }}</p>
-                <div class="d-flex flex-row bd-highlight mb-3">
-                    <div class="p-2 bd-highlight">
-                        {% if post.group %}
-                            <a href={% url 'posts:group' slug=post.group.slug %}>All group's posts</a>
-                        {% endif %}
-                    </div>
-                    <div class="p-2 bd-highlight">
-                        <a href="{% url 'posts:groups' %}">Список групп</a>
-                    </div>
-                </div>
-
-                {#                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>#}
+                {% include 'includes/post_in_list.html' with post=post %}
                 {% if not forloop.last %}
                     <hr>
                 {% endif %}

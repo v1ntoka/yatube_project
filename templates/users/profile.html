@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+    Профиль {{ user.username }}
+{% endblock %}
+{% block content %}
+    <div class="container py-3">
+        <div class="card p-1" style="background-color: #f1f1f1">
+            <div class="card-body">
+                <h5 class="card-title">Профиль пользователя {{ user.username }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Записей пользователя: {{ posts.count }}</h6>
+                {% if user.get_full_name %}
+                    <p class="card-text">
+                        Имя: {{ user.get_full_name }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        {% for post in page_obj %}
+            <div class="p-1">
+                {% include 'includes/post_in_list.html' with post=post %}
+            </div>
+            {#            <hr>#}
+        {% endfor %}
+    </div>
+{% endblock %}

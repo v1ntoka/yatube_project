@@ -1,0 +1,60 @@
+<div class="card p-3" style="background-color: #ececec">
+    {#<div class="card-header p-1">#}
+    <div class="d-flex flex-row bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <?xml version="1.0" encoding="UTF-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15" height="15">
+                <path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/>
+                <path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/>
+            </svg>
+            <a href="{% url 'users:profile' username=post.author %}" class="link-dark">
+                {% if post.author.get_full_name %}
+                    {{ post.author.get_full_name }}
+                {% else %}
+                    {{ post.author }}
+                {% endif %}
+            </a>
+            {#                        <a href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.#}
+        </div>
+        <div class="p-2 bd-highlight">
+            <?xml version="1.0" encoding="UTF-8"?>
+            <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="15" height="15">
+                <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
+                <path d="M12,6a1,1,0,0,0-1,1v4.325L7.629,13.437a1,1,0,0,0,1.062,1.7l3.84-2.4A1,1,0,0,0,13,11.879V7A1,1,0,0,0,12,6Z"/>
+            </svg>
+
+            {{ post.pub_date|date:"d E Y" }}
+        </div>
+    </div>
+    {#</div>#}
+    <p class="card-text">{{ post.text }}</p>
+    <div class="d-flex justify-content-between">
+        <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-primary">Подробнее</button>
+        </div>
+        <div class="p-2 bd-highlight">
+            <div class="btn-group">
+                <a href="{% if post.group %}
+                    	{% url 'posts:group' slug=post.group.slug %}
+                    	{% else %}
+                    	#!
+                    {% endif %}">
+                    <button type="button" class="btn btn-danger">Группа: {% if post.group %}
+                        {{ post.group|truncatechars:30 }}
+                    {% else %}
+                        Нет
+                    {% endif %}</button>
+                </a>
+                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Переключатель выпадающего списка</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'posts:groups' %}">Список групп</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {#                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>#}
+</div>

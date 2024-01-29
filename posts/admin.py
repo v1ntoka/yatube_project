@@ -18,3 +18,4 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ('title', 'description')
     search_fields = ('title', 'description')
     list_per_page = 15
+    prepopulated_fields = {"slug": ("title",)}

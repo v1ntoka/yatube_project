@@ -10,15 +10,18 @@ def index(request):
     posts: Paginator
     page_number = request.GET.get('page', 1)
     keyword = request.GET.get('q', None)
+    context = {}
 
     if keyword:
         posts = Paginator(Post.objects.filter(text__icontains=keyword).select_related('author').select_related('group'),
                           10)
+        context.update({'keyword': keyword})
     else:
         posts = Paginator(Post.objects.all(), 10)
 
     page_obj = posts.page(page_number)
-    return render(request, template_name='posts/index.html', context={'posts': posts, 'page_obj': page_obj})
+    context.update({'posts': posts, 'page_obj': page_obj})
+    return render(request, template_name='posts/index.html', context=context)
 
 
 def group(request, slug):

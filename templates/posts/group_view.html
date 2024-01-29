@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-	Записи сообщества {{ group.title }}
+    Записи сообщества {{ group.title }}
 {% endblock %}
 {% block content %}
     <main>
@@ -10,22 +10,10 @@
             <p>Всего постов: {{ posts.count }}</p>
             <hr>
             {% for post in page_obj %}
-                <ul>
-                    <li>
-                        Author: {{ post.author.get_full_name }}
-{#                        <a href="{% url 'posts:profile' username=post.author.username %}">{{ post.author.get_full_name }}</a>.#}
-                    </li>
-                    <li>
-                        Publication date: {{ post.pub_date|date:"d E Y" }}
-                    </li>
-                </ul>
-                <p>{{ post.text }}</p>
-                {#                <a href="">All group's posts</a>#}
-{#                <p><a href="{% url 'posts:post_detail' pk=post.id %}">Details</a></p>#}
-
+                {% include 'includes/post_in_list.html' %}
                 {% if not forloop.last %}
                     <hr>
-                {% endif %}
+                {% endif %} 
             {% endfor %}
         </div>
     </main>
