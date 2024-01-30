@@ -15,10 +15,10 @@ def index(request):
 
     if keyword:
         posts = Paginator(Post.objects.filter(text__icontains=keyword).select_related('author').select_related('group'),
-                          10)
+                          9)
         context.update({'keyword': keyword})
     else:
-        posts = Paginator(Post.objects.all(), 10)
+        posts = Paginator(Post.objects.all(), 9)
 
     page_obj = posts.page(page_number)
     context.update({'posts': posts, 'page_obj': page_obj})
