@@ -24,4 +24,5 @@ def profile(request, username):
     posts = Paginator(queryset, 10)
     page = request.GET.get('page', 1)
     page_obj = posts.get_page(page)
-    return render(request, 'users/profile.html', context={'page_obj': page_obj, 'user': user})
+    total = queryset.count()
+    return render(request, 'users/profile.html', context={'page_obj': page_obj, 'user': user, 'total': total})

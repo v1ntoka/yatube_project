@@ -37,7 +37,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{% url 'users:profile' username=request.user%}">Профиль</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="#!">Новая запись</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'posts:post_create' %}">Новая запись</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

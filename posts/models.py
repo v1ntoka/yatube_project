@@ -19,23 +19,23 @@ class Group(models.Model):
 
 class Post(models.Model):
     text = models.TextField(
-        verbose_name="Post's text",
-        help_text="Enter text here"
+        verbose_name="Текст:",
+        help_text="Введите текст записи"
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="Date published"
+        verbose_name="Дата публикации"
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name="Author"
+        verbose_name="Автор"
     )
     group = models.ForeignKey(
         Group,
         on_delete=models.SET_NULL,
-        verbose_name="Group",
-        help_text="Choose group",
+        verbose_name="Группа",
+        help_text="Группа, к которой относится запись",
         blank=True, null=True
     )
 

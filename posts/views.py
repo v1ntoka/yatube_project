@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger
 from .models import Post, Group, User
 from django.views.generic import ListView
+from .forms import PostForm
 
 
 # Create your views here.
@@ -42,7 +43,33 @@ class GroupsView(ListView):
     context_object_name = 'groups'
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
     total = Post.objects.filter(author=post.author).count()
     return render(request, 'posts/detail_view.html', context={'post': post, 'total': total})
+
+
+def post_create(request):
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.author = request.user
+        post.save()
+        return redirect('users:profile', username=request.user)
+    return render(request, 'posts/create_view.html', context={'form': form})
+
+
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author == request.user or request.user.is_staff:
+        form = PostForm(request.POST or None, instance=post)
+        if form.is_valid():
+            post.save()
+            return redirect('posts:post_detail', post_id)
+        context = {
+            "form": form,
+            "is_edit": True,
+            "post": post,
+        }
+        return render(request, "posts/create_view.html", context)
+    return redirect('posts:post_detail', post_id)

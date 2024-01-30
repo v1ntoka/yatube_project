@@ -34,16 +34,14 @@
                     style="background-color: #ececec">
                     Всего записей пользователя: <span>{{ total }}</span>
                 </li>
-                {#            {% if request.user.is_superuser or request.user.is_staff or request.user == post.author %}#}
-                {% if upd_allowed %}
-                    <li class="list-group-item">
-                        <a href="{% url 'posts:post_edit' post.id %}">Edit</a>
-                    </li>
+                {% if request.user.is_superuser or request.user.is_staff or request.user == post.author %}
+                    {#                {% if upd_allowed %}#}
+                        <a class="p-2" href="{% url 'posts:post_edit' post.id %}"><button class="btn btn-primary">Редактировать</button></a>
                 {% endif %}
             </ul>
         </aside>
         <article class="col-12 col-md-9">
-            <div class="card" style="background-color: #ececec">
+            <div class="card" style="background-color: #ececec; width: 75%">
                 <div class="card-body">
                     <div class="card-text">
                         {{ post.text }}

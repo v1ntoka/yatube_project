@@ -20,13 +20,13 @@
                 <path d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm0,22A10,10,0,1,1,22,12,10.011,10.011,0,0,1,12,22Z"/>
                 <path d="M12,6a1,1,0,0,0-1,1v4.325L7.629,13.437a1,1,0,0,0,1.062,1.7l3.84-2.4A1,1,0,0,0,13,11.879V7A1,1,0,0,0,12,6Z"/>
             </svg>
-            {{ post.pub_date|date:"d E Y" }}
+            {{ post.pub_date|date:"d.m.Y \a\t P" }}
         </div>
     </div>
     <p class="card-text">{{ post.text }}</p>
     <div class="d-flex justify-content-between">
         <div class="p-2 bd-highlight">
-            <a href="{% url 'posts:post_detail' pk=post.id %}">
+            <a href="{% url 'posts:post_detail' post.id %}">
                 <button type="button" class="btn btn-primary">Подробнее</button>
             </a>
         </div>
