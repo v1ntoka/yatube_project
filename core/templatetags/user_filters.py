@@ -18,3 +18,8 @@ def add_placeholder(field: BoundField, placeholder):
     if field.field.widget.attrs:
         attrs.update(field.field.widget.attrs)
     return field.as_widget(attrs=attrs)
+
+@register.filter
+def add_fk_ph(field, placeholder):
+    attrs = {'placeholder': placeholder, 'class': "form-control"}
+    return field.as_widget(attrs=attrs)

@@ -2,9 +2,9 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-
+from django.views.generic import CreateView
 from posts.models import Post, User
-from .forms import MyAuthForm
+from .forms import MyAuthForm, CreationForm
 from django.urls import reverse_lazy
 
 
@@ -26,3 +26,9 @@ def profile(request, username):
     page_obj = posts.get_page(page)
     total = queryset.count()
     return render(request, 'users/profile.html', context={'page_obj': page_obj, 'user': user, 'total': total})
+
+
+class SignUp(CreateView):
+    form_class = CreationForm
+    template_name = "users/signup_view.html"
+    success_url = reverse_lazy('users:login')
