@@ -34,9 +34,13 @@
                     style="background-color: #ececec">
                     Всего записей пользователя: <span>{{ total }}</span>
                 </li>
-                {% if request.user.is_superuser or request.user.is_staff or request.user == post.author %}
-                    {#                {% if upd_allowed %}#}
-                        <a class="p-2" href="{% url 'posts:post_edit' post.id %}"><button class="btn btn-primary">Редактировать</button></a>
+                {% if upd_allowed %}
+                    <a class="p-2" href="{% url 'posts:post_edit' post_id=post.id %}">
+                        <button class="btn btn-primary">Редактировать</button>
+                    </a>
+                    <a class="p-2" href="{% url 'posts:post_delete' post_id=post.id %}">
+                        <button class="btn btn-danger">Удалить</button>
+                    </a>
                 {% endif %}
             </ul>
         </aside>
@@ -44,7 +48,7 @@
             <div class="card" style="background-color: #ececec; width: 75%">
                 <div class="card-body">
                     <div class="card-text">
-                        {{ post.text }}
+                        {{ post.text|linebreaksbr }}
                     </div>
                 </div>
             </div>

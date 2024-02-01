@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, PageNotAnInteger
 from .models import Post, Group, User
 from django.views.generic import ListView
 from .forms import PostForm
+import re
 
 
 # Create your views here.
@@ -44,9 +45,14 @@ class GroupsView(ListView):
 
 
 def post_detail(request, post_id):
+    context = {}
     post = get_object_or_404(Post, pk=post_id)
+    if request.user.is_staff or request.user == post.author:
+        context['upd_allowed'] = True
+        request.session['from'] = request.META.get('HTTP_REFERER')
     total = Post.objects.filter(author=post.author).count()
-    return render(request, 'posts/detail_view.html', context={'post': post, 'total': total})
+    context.update({'post': post, 'total': total})
+    return render(request, 'posts/detail_view.html', context=context)
 
 
 def post_create(request):
@@ -73,3 +79,14 @@ def post_edit(request, post_id):
         }
         return render(request, "posts/create_view.html", context)
     return redirect('posts:post_detail', post_id)
+
+
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user.is_staff or request.user == post.author:
+        post.delete()
+        if request.session['from']:
+            return redirect(request.session['from'])
+        else:
+            return redirect('posts:index')
+    redirect('posts:post_detail', post_id)
