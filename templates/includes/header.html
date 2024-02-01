@@ -35,13 +35,21 @@
                                     {{ user.username }}
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{% url 'users:profile' username=request.user%}">Профиль</a>
+                                    <li><a class="dropdown-item" href="{% url 'users:profile' username=request.user %}">Профиль</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'posts:post_create' %}">Новая запись</a></li>
+                                    {#                                    <li><a class="dropdown-item" href="{% url 'posts:post_create' %}">Новая запись</a></li>#}
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="#!">Изменить пароль</a></li>
+                                    {% if request.user.is_staff %}
+                                        <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Панель
+                                            управления</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    {% endif %}
+
+                                    {#                                    <li><a class="dropdown-item" href="{% url 'users:password_change' %}">Изменить пароль</a></li>#}
                                     <li><a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a></li>
                                 </ul>
                             </div>

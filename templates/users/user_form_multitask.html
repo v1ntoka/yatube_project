@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    Login
+    {{ what }}
 {% endblock %}
 
 {% block content %}
@@ -11,6 +11,7 @@
                 <div class="card">
                     <div class="card-body">
 
+                        {# Этот блок будет показан, если в форме есть ошибки #}
                         {% if form.errors %}
                             {% for field in form %}
                                 {% for error in field.errors %}
@@ -30,27 +31,17 @@
                             {% csrf_token %}
                             {% for field in form %}
                                 <div class="form-outline mb-4" aria-required="true">
-                                    {{ field }}
+                                    {{ field|add_fk_ph:field.label }}
+                                    {% if field.help_text %}
+                                        <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+                                            {{ field.help_text|safe }}
+                                        </small>
+                                    {% endif %}
                                 </div>
+
                             {% endfor %}
-
-                            <div class="row mb-4">
-                                <div class="col d-flex justify-content-center">
-                                    <!-- Checkbox -->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="form2Example31"
-                                               checked/>
-                                        <label class="form-check-label" for="form2Example31"> Запомнить </label>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <!-- Simple link -->
-                                    <a href="#!">Забыли пароль?</a>
-                                </div>
-                            </div>
-
-                            <input type="submit" value="Войти" class="btn btn-primary btn-block mb-8 col-12">
+                            <input type="submit" value="{{ what }}"
+                                   class="btn btn-primary btn-block mb-8 col-12">
                         </form>
                     </div> <!-- card body -->
                 </div> <!-- card -->

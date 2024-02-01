@@ -18,7 +18,10 @@
                     <div class="col-4">
                         <h6 class="card-subtitle mb-2 text-muted">Записей пользователя: {{ total }}</h6>
                         {% if request.user == user %}
-                            <a href="{% url 'posts:post_create' %}"><input type="button" class="btn btn-primary m-2" value="Новая запись"></a>
+                            <a href="{% url 'posts:post_create' %}"><input type="button" class="btn btn-primary m-2"
+                                                                           value="Новая запись"></a>
+                            <a href="{% url 'users:password_change' %}"><input type="button" class="btn btn-danger"
+                                                                               value="Сменить пароль"></a>
                         {% endif %}
                     </div>
                 </div>

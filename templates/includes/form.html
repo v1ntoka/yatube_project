@@ -4,12 +4,29 @@
         <div class="card">
             <div class="card-header">{{ card_name }}</div>
             <div class="card-body">
-            <form method="post">
-                <div class="offset-2">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </div>
-                <input type="submit" value="{{ button_text }}" class="btn btn-primary col-2 offset-5">
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                {{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+
+                <form method="post">
+                    <div class="offset-2">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <input type="submit" value="{{ button_text }}" class="btn btn-primary col-2 offset-5">
                 </form>
             </div> <!-- card body -->
         </div> <!-- card -->
