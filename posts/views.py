@@ -1,17 +1,22 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.paginator import Paginator
 from .models import Post, Group, User
 from django.views.generic import ListView
 from .forms import PostForm
-import re
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
 
 def index(request):
     posts: Paginator
-    page_number = request.GET.get('page', 1)
-    keyword = request.GET.get('q', None)
+    if request.user.is_authenticated:
+        page_number = request.GET.get('page', 1)
+        keyword = request.GET.get('q', None)
+    else:
+        page_number = 1
+        keyword = None
     context = {}
 
     if keyword:
@@ -26,6 +31,7 @@ def index(request):
     return render(request, template_name='posts/index.html', context=context)
 
 
+@login_required()
 def group(request, slug):
     # slug = request.GET.get('slug')
     page = request.GET.get('page', 1)
@@ -37,13 +43,14 @@ def group(request, slug):
                   context={'page_obj': page_obj, 'posts': posts, 'group': group_data})
 
 
-class GroupsView(ListView):
+class GroupsView(ListView, LoginRequiredMixin):
     template_name = 'posts/groups_list.html'
     paginate_by = 15
     model = Group
     context_object_name = 'groups'
 
 
+@login_required()
 def post_detail(request, post_id):
     context = {}
     post = get_object_or_404(Post, pk=post_id)
@@ -55,6 +62,7 @@ def post_detail(request, post_id):
     return render(request, 'posts/detail_view.html', context=context)
 
 
+@login_required()
 def post_create(request):
     form = PostForm(request.POST or None)
     if form.is_valid():
@@ -92,6 +100,7 @@ def post_delete(request, post_id):
     redirect('posts:post_detail', post_id)
 
 
+@login_required()
 def profile(request, username):
     user = User.objects.get(username=username)
     queryset = Post.objects.filter(author__username=username)
