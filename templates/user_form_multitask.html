@@ -1,8 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}
-    {{ what }}
-{% endblock %}
-
 {% block content %}
     <div class="container">
         {% load user_filters %}
@@ -40,7 +36,7 @@
                                 </div>
 
                             {% endfor %}
-                            <input type="submit" value="{{ what }}"
+                            <input type="submit" value="{% block button_text %}{% endblock %}"
                                    class="btn btn-primary btn-block mb-8 col-12">
                         </form>
                     </div> <!-- card body -->

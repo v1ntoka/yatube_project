@@ -90,3 +90,13 @@ def post_delete(request, post_id):
         else:
             return redirect('posts:index')
     redirect('posts:post_detail', post_id)
+
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    queryset = Post.objects.filter(author__username=username)
+    posts = Paginator(queryset, 10)
+    page = request.GET.get('page', 1)
+    page_obj = posts.get_page(page)
+    total = queryset.count()
+    return render(request, 'posts/profile.html', context={'page_obj': page_obj, 'user': user, 'total': total})

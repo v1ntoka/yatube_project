@@ -22,7 +22,7 @@
                     </li>
                 {% endif %}
                 <li class="list-group-item" style="background-color: #ececec">
-                    Автор: <a href="{% url 'users:profile' username=post.author.username %}">
+                    Автор: <a href="{% url 'posts:profile' username=post.author.username %}">
                     {% if post.author.get_full_name %}
                         {{ post.author.get_full_name }}
                     {% else %}
