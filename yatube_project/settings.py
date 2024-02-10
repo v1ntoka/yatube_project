@@ -26,7 +26,12 @@ SECRET_KEY = 'django-insecure-_+rvizqj&8h^wli+zkrv_ri%^i26qz1m&m5w*lj42=1sj!@=di
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'testserver',
+]
 
 # Application definition
 
@@ -41,6 +46,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "core.apps.CoreConfig",
     "about.apps.AboutConfig",
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +134,8 @@ LOGOUT_URL = 'users:logout'
 LOGIN_REDIRECT_URL = 'posts:index'
 
 EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT, EMAIL_USE_TLS = get_environment()
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

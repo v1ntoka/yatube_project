@@ -27,6 +27,9 @@
                             {% csrf_token %}
                             {% for field in form %}
                                 <div class="form-outline mb-4" aria-required="true">
+                                    {% if field.field.required %}
+                                        <span class="required text-danger">*</span>
+                                    {% endif %}
                                     {{ field|add_fk_ph:field.label }}
                                     {% if field.help_text %}
                                         <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
@@ -34,7 +37,6 @@
                                         </small>
                                     {% endif %}
                                 </div>
-
                             {% endfor %}
                             <input type="submit" value="{% block button_text %}{% endblock %}"
                                    class="btn btn-primary btn-block mb-8 col-12">
