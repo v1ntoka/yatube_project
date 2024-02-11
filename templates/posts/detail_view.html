@@ -47,12 +47,12 @@
         </aside>
         <article class="col-12 col-md-9">
             <div class="card" style="background-color: #ececec; width: 75%">
+                <div class="card-img-top">
+                    {% thumbnail post.image "960x339" upscale=True as im %}
+                        <img class="card-img my-2" src="{{ im.url }}">
+                    {% endthumbnail %}
+                </div>
                 <div class="card-body">
-                    <div class="card-img">
-                        {% thumbnail post.image "960x339" upscale=True as im %}
-                            <img class="card-img-top my-2" src="{{ im.url }}">
-                        {% endthumbnail %}
-                    </div>
                     <div class="card-text">
                         {{ post.text|linebreaksbr }}
                     </div>

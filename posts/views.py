@@ -56,7 +56,7 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.user.is_staff or request.user == post.author:
         context['upd_allowed'] = True
-        if request.META.get('HTTP_REFERER').find('edit') == -1:
+        if request.META.get('HTTP_REFERER').find('edit') == -1 and request.META.get('HTTP_REFERER').find('create') == -1:
             request.session['from'] = request.META.get('HTTP_REFERER')
     total = Post.objects.filter(author=post.author).count()
     context.update({'post': post, 'total': total})
